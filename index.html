@@ -2,7 +2,7 @@
 <html lang="my">
 <head>
     <meta charset="UTF-8">
-    <title>2D Master V.3.001 </title>
+    <title>2D လည်ဂျာ V.4.22.2 </title>
     <link rel="icon" href="https://i.ibb.co/6ckfFrqw/Gemini-Generated-Image-nlrzqsnlrzqsnlrz-1-1-1.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
@@ -372,6 +372,7 @@ input, textarea, select, .tab, .data-table td, .report-table td, .report-table t
     background: #2c3e50 !important; /* နောက်ခံ အပြာရင့် */
     padding: 8px 5px !important;  /* အကွက်ကို အပေါ်အောက် နည်းနည်းချဲ့မည် */
 }
+
     </style>
 <script src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js'></script>
 </head>
@@ -449,22 +450,33 @@ input, textarea, select, .tab, .data-table td, .report-table td, .report-table t
             </div>
     </div>
 </div>    
-    <button class="btn-header" onclick="saveCurrentSession()" style="background:#27ae60; color:white; padding: 6px 12px; font-size:13px; border:none; border-radius:4px;">
+ <!-- ခလုတ်များ အပိုင်း (အစ) -->
+<div style="display: flex; align-items: center; gap: 5px; margin: 5px 0;">
+
+    <button onclick="saveCurrentSession()" style="background:#27ae60; color:white; padding: 6px 10px; font-size:12px; border:none; border-radius:4px; white-space: nowrap; display: flex; align-items: center; gap: 3px;">
         💾 Save
     </button>
 
-    <button class="btn-header" onclick="forceDownloadBackup()" style="background:#e67e22; color:white; padding: 6px 12px; font-size:13px; margin-left:5px; border:none; border-radius:4px;">
-        📂 Backup Only
+    <button onclick="saveMasterSystem()" style="background:#e67e22; color:white; padding: 6px 10px; font-size:12px; border:none; border-radius:4px; white-space: nowrap; display: flex; align-items: center; gap: 3px;">
+        📂 Backup
     </button>
-    <input type="file" id="importFile" style="display:none" accept=".json,application/json" onchange="importBackup(this)">
 
+    <button onclick="openArchiveModal()" style="background:#8e44ad; color:white; padding: 6px 10px; font-size:12px; border:none; border-radius:4px; white-space: nowrap; display: flex; align-items: center; gap: 3px;">
+        📜 မှတ်တမ်း
+    </button>
+
+    <!-- id="importFile" ကို တစ်ခုတည်း ထားပါမယ် -->
+    <input type="file" id="importFile" style="display:none" accept=".json,application/json" onchange="importBackup(this)">
+    </div>
 </div>
 
-                <div style="display:flex; gap:10px;">
-                    <span id="trialDisplayBadge" style="color:#f39c12; font-weight:bold; font-size:12px; display:flex; align-items:center;"></span>
-                    <button onclick="$('helpModal').style.display='flex'" style="background:rgba(255,255,255,0.1); border:none; border-radius:50%; width:30px; height:30px; color:white; cursor:pointer;">❓</button>
-                    <button onclick="toggleSidebar()" style="background:rgba(255,255,255,0.1); border:none; border-radius:50%; width:30px; height:30px; color:white; cursor:pointer;">⚙️</button>
-                </div>
+<div style="display:flex; justify-content: flex-end; align-items:center; gap:10px;">
+    <span id="trialDisplayBadge" style="color:#f39c12; font-weight:bold; font-size:12px; display:flex; align-items:center;"></span>
+    <button onclick="$('helpModal').style.display='flex'" style="background:rgba(255,255,255,0.1); border:none; border-radius:50%; width:30px; height:30px; color:white; cursor:pointer;">❓</button>
+    <button onclick="toggleSidebar()" style="background:rgba(255,255,255,0.1); border:none; border-radius:50%; width:30px; height:30px; color:white; cursor:pointer;">⚙️</button>
+</div>
+<!-- အောက်ခြေခလုတ်များ အပိုင်း (အဆုံး) -->
+
             </div>
 <div id="helpModal">
     <div class="help-content">
@@ -676,16 +688,19 @@ input, textarea, select, .tab, .data-table td, .report-table td, .report-table t
         <div class="left-panel">
             <div class="action-btns" style="display:flex; gap:5px; padding:5px 5px; background:#f8f9fa; border-bottom:1px solid #eee;">
                 <input type="text" id="winNum" style="width:50px; text-align:center; font-weight:bold; border: 2px solid #34495e; border-radius: 6px;" placeholder="Win" oninput="saveWinNum()">
-                <button onclick="saveAsImage('captureArea', '2d_table')" style="flex:1; background:#17a2b8; color:white; border:none; border-radius:6px; font-size:13px; font-weight:bold;">📷 Image</button>
                 <button onclick="copyHistoryLog()" style="flex:1;
                 background:#27ae60; color:white; border:none; border-radius:6px;
                 font-size:13px; font-weight:bold;">📋 တစ်ဦးချင်း စာရင်း</button>
+                <button onclick="copySplitOverLimitText()"
+                style="flex:1; background:#17a2b8; color:white; border:none;
+                border-radius:6px; font-size:13px; font-weight:bold;">📤 Copy
+                (Split)</button>
                 <button onclick="copyOverLimitText()" style="flex:1;
                 background:#f39c12; color:white; border:none; border-radius:6px;
-                font-size:13px; font-weight:bold;">⚠️ ကာရန် copyယူ</button>
+                font-size:13px; font-weight:bold;">📤 ကာရန် copy</button>
                 <button onclick="showProfitTable()" style="flex:1;
                 background:#8e44ad; color:white; border:none; border-radius:6px;
-                font-size:13px; font-weight:bold;">📊 အရှုံး/အမြတ်</button>
+                font-size:13px; font-weight:bold;">📊 အရှုံး/ အမြတ်</button>
             </div>
             <div id="captureArea" style="flex:1; overflow-y:auto; padding:5px;"></div>
         </div>
@@ -823,7 +838,7 @@ input, textarea, select, .tab, .data-table td, .report-table td, .report-table t
    <button onclick="openHistoryModal()" style="width:100%; padding:10px;
    background:#99BDBB; color:whiteb !important; border:none; border-radius:6px;
    margin-top:10px; cursor:pointer; font-weight:bold;">
-    📜 View History (မှတ်တမ်းကြည့်ရန်)
+    📜 စာရင်းချုပ်
 </button>
 
 <button onclick="document.getElementById('safeResetModal').style.display='flex'" style="width:100%; padding:10px; background:#c0392b !important; color:white !important; border:none; border-radius:6px; margin-top:10px; cursor:pointer; font-weight:bold;">
@@ -886,154 +901,7 @@ input, textarea, select, .tab, .data-table td, .report-table td, .report-table t
 </div>
 
 <script>
-// --- ၁။ Data သိမ်းဆည်းခြင်း Function (Auto Calculation) ---
-function archiveDailyData() {
-    var today = new Date().toLocaleDateString('en-GB'); 
-    var totalAmount = 0;
-    var netTotal = 0;
-    var winTotal = 0;
-
-    var winNum = (typeof settings !== 'undefined') ? (settings.winNum || "") : "";
-    var odds = (typeof settings !== 'undefined') ? (settings.odds || 80) : 80;
-    var defaultCom = (typeof settings !== 'undefined') ? (settings.com || 0) : 0;
-
-    if(typeof customers !== 'undefined' && Array.isArray(customers)) {
-        customers.forEach(c => {
-            var cTotal = 0;
-            var cWinAmt = 0;
-            c.data.forEach(d => {
-                var amt = parseInt(d.amt) || 0;
-                cTotal += amt;
-                if(winNum && d.num === winNum) cWinAmt += amt;
-            });
-            var cComRate = (c.com !== null && c.com !== undefined) ? c.com : defaultCom;
-            var cNet = cTotal - (cTotal * (cComRate / 100));
-            totalAmount += cTotal;
-            netTotal += cNet;
-            winTotal += cWinAmt;
-        });
-    }
-
-    var payout = winTotal * odds;
-    var profit = netTotal - payout;
-
-    if (totalAmount === 0 && profit === 0) return;
-
-    var dailyRecord = {
-        date: today,
-        total: totalAmount,
-        profit: profit,
-        win: winNum,
-        timestamp: new Date().getTime()
-    };
-
-    var history = JSON.parse(localStorage.getItem('my_weekly_record') || "[]");
-    history.push(dailyRecord);
-    localStorage.setItem('my_weekly_record', JSON.stringify(history));
-}
-
-// --- ၂။ Reset & Delete Function ---
-window.runSafeDelete = function() {
-    archiveDailyData(); // ၁. သိမ်းမယ်
-    if(typeof customers !== 'undefined') { // ၂. ရှင်းမယ်
-        customers.forEach(c => { c.data = []; c.history = []; });
-    }
-    if(typeof settings !== 'undefined') { settings.winNum = ""; } // ၃. Win Num ဖျက်မယ်
-    var winInput = document.getElementById('winNum');
-    if(winInput) winInput.value = "";
-
-    if(typeof saveToStorage === 'function') { // ၄. Save မယ်
-        saveToStorage(); 
-    } else {
-        localStorage.setItem('2d_v1.10_trial_data', JSON.stringify(customers));
-    }
-    if(document.getElementById('safeResetModal')) { // ၅. ပိတ်မယ်
-        document.getElementById('safeResetModal').style.display = 'none';
-    }
-    alert("✅ ယနေ့စာရင်းကို History တွင်သိမ်းပြီး၊ အသစ်ပြန်ဖွင့်လိုက်ပါပြီ။");
-    window.location.reload();
-}
-
-// --- ၃။ History ဖွင့်ခြင်း ---
-function openHistoryModal() {
-    var modal = document.getElementById('historyModal');
-    var tbody = document.getElementById('historyTableBody');
-    if(!modal || !tbody) return;
-
-    var historyData = JSON.parse(localStorage.getItem('my_weekly_record') || "[]");
-    tbody.innerHTML = "";
-    var grandTotal = 0;
-    var grandProfit = 0;
-
-    if (historyData.length === 0) {
-        tbody.innerHTML = "<tr><td colspan='3' style='padding:15px; color:#777;'>မှတ်တမ်း မရှိသေးပါ။</td></tr>";
-    } else {
-        historyData.slice().reverse().forEach(record => {
-            grandTotal += (record.total || 0);
-            grandProfit += (record.profit || 0);
-            var pColor = record.profit >= 0 ? "#27ae60" : "#c0392b";
-            var pSign = record.profit > 0 ? "+" : "";
-            var row = `<tr>
-                <td style="padding:10px;">${record.date} <br><small style="color:#888;">(Win: ${record.win||'-'})</small></td>
-                <td style="padding:10px;">${parseInt(record.total).toLocaleString()}</td>
-                <td style="padding:10px; color:${pColor}; font-weight:bold;">${pSign}${Math.round(record.profit).toLocaleString()}</td>
-            </tr>`;
-            tbody.innerHTML += row;
-        });
-        var totalRow = `<tr style="background:#f39c12; font-weight:bold; color:white;">
-            <td style="padding:10px;">Total</td>
-            <td style="padding:10px;">${grandTotal.toLocaleString()}</td>
-            <td style="padding:10px;">${grandProfit.toLocaleString()}</td>
-        </tr>`;
-        tbody.innerHTML += totalRow;
-    }
-    modal.style.display = 'flex';
-}
-
-// --- ၄။ Report Functions ---
-function displayWeeklyReport() {
-    var records = JSON.parse(localStorage.getItem('my_weekly_record') || "[]");
-    var weeklyTotal = 0;
-    var weeklyProfit = 0;
-    var oneWeekAgo = new Date();
-    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-    records.forEach(r => {
-        if(r.date) {
-            var parts = r.date.split('/');
-            if(parts.length === 3) {
-                var rDate = new Date(parts[2], parts[1] - 1, parts[0]);
-                if (rDate >= oneWeekAgo) {
-                    weeklyTotal += (r.total || 0);
-                    weeklyProfit += (r.profit || 0);
-                }
-            }
-        }
-    });
-    alert("📅 ယခုအပတ် စာရင်းချုပ် (Last 7 Days)\n------------------------\n💰 ရောင်းရငွေ: " + weeklyTotal.toLocaleString() + "\n📈 အမြတ်/အရှုံး: " + Math.round(weeklyProfit).toLocaleString());
-}
-
-function displayMonthlyReport() {
-    var records = JSON.parse(localStorage.getItem('my_weekly_record') || "[]");
-    var monthlyTotal = 0;
-    var monthlyProfit = 0;
-    var now = new Date();
-    var currentMonth = now.getMonth();
-    var currentYear = now.getFullYear();
-    records.forEach(r => {
-        if(r.date) {
-            var parts = r.date.split('/');
-            if(parts.length === 3) {
-                var rDate = new Date(parts[2], parts[1] - 1, parts[0]);
-                if (rDate.getMonth() === currentMonth && rDate.getFullYear() === currentYear) {
-                    monthlyTotal += (r.total || 0);
-                    monthlyProfit += (r.profit || 0);
-                }
-            }
-        }
-    });
-    alert("🗓️ ယခုလ စာရင်းချုပ် (This Month)\n------------------------\n💰 ရောင်းရငွေ: " + monthlyTotal.toLocaleString() + "\n📈 အမြတ်/အရှုံး: " + Math.round(monthlyProfit).toLocaleString());
-}
-
+// --- ၁။ Data သိမ်းဆည်းခြင်း Function (Auto Calculation) 
 function clearHistoryLog() {
     if(confirm("မှတ်တမ်းအားလုံးကို ဖျက်မှာ သေချာပါသလား?")) {
         localStorage.removeItem('my_weekly_record');
@@ -1658,17 +1526,18 @@ if (!settings.customLimits) settings.customLimits = {};
   function openArchiveModal() {
         let archives = JSON.parse(localStorage.getItem('2d_archives')) || [];
         let listHtml = "";
+
         if (archives.length === 0) {
             listHtml = "<div style='text-align:center; padding:20px; color:#777;'>သိမ်းထားသော စာရင်းမရှိသေးပါ</div>";
         } else {
             archives.forEach(file => {
                 listHtml += `
-                <div style="background:white; padding:10px; border-radius:8px; margin-bottom:5px; box-shadow:0 2px 4px rgba(0,0,0,0.1); border-left: 5px solid #3498db;">
+                <div style="background:white; padding:10px; border-radius:8px; margin-bottom:10px; box-shadow:0 2px 4px rgba(0,0,0,0.1); border-left: 5px solid #3498db;">
                     <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
                         <span style="font-weight:bold; color:#2c3e50;">${file.name}</span>
                         <span style="font-size:12px; color:#7f8c8d;">${file.date}</span>
                     </div>
-                    <div style="font-size:14px; color:#00F29D; font-weight:bold; margin-bottom:5px;">
+                    <div style="font-size:14px; color:#27ae60; font-weight:bold; margin-bottom:8px;">
                         Total: ${file.total.toLocaleString()}
                     </div>
                     <div style="display:flex; gap:5px;">
@@ -1678,14 +1547,17 @@ if (!settings.customLimits) settings.customLimits = {};
                 </div>`;
             });
         }
+
         document.getElementById('archiveList').innerHTML = listHtml;
         document.getElementById('archiveModal').style.display = 'flex';
-    }
-    // (၃) ပြန်ဖွင့်မည် (Load)
+ }
+     // (၃) ပြန်ဖွင့်မည် (Load)
   function loadArchive(id) {
         if(!confirm("⚠️ သတိပေးချက်:\nလက်ရှိရိုက်ထားသော စာရင်းများ ပျက်သွားပြီး၊ ရွေးချယ်သော စာရင်းကို အစားထိုးပါမည်။ ဆက်လုပ်မလား?")) return;
+
         let archives = JSON.parse(localStorage.getItem('2d_archives')) || [];
         let file = archives.find(f => f.id === id);
+        
         if (file) {
             customers = file.customers;
             settings = file.settings;
@@ -1696,6 +1568,78 @@ if (!settings.customLimits) settings.customLimits = {};
             alert("📂 စာရင်းဟောင်း ပြန်ရောက်ပါပြီ။");
         }
     }
+  function updateHistoryTable() {
+    var archives = JSON.parse(localStorage.getItem('myLedgerDB')) || [];
+    
+    // Header ခေါင်းစဉ်အပိုင်း
+    var tableHTML = `
+        <table style="width:100%; border-collapse:collapse; text-align:center; font-size:13px;">
+            <thead style="background:#ddd; color:#333; font-weight:bold;">
+                <tr>
+                    <td style="padding:10px; border:1px solid #ccc;">ရက်စွဲ</td>
+                    <td style="padding:10px; border:1px solid #ccc;">ရောင်းရငွေ</td>
+                    <td style="padding:10px; border:1px solid #ccc;">အမြတ်/အရှုံး</td>
+                    <td style="padding:10px; border:1px solid #ccc;">ဖျက်</td> 
+                </tr>
+            </thead>
+            <tbody>
+    `;
+
+    if (archives.length === 0) {
+        tableHTML += `<tr><td colspan="4" style="padding:20px; color:#777;">မှတ်တမ်းမရှိသေးပါ</td></tr>`;
+    } else {
+        // နောက်ဆုံးစာရင်း အပေါ်ရောက်အောင် ပြောင်းပြန်လှန်ပြီး Loop ပတ်မည်
+        for (var i = archives.length - 1; i >= 0; i--) {
+            var item = archives[i];
+            
+            var profitText = item.profit ? parseInt(item.profit).toLocaleString() : "-";
+            var dateText = item.date || "-";
+            var totalText = item.total ? parseInt(item.total).toLocaleString() : "0";
+            
+            // Win ရှိခဲ့ရင် ပြမယ်
+            if(item.winNum) {
+                dateText += `<br><span style="font-size:11px; color:#555;">(Win: ${item.winNum})</span>`;
+            }
+
+            // Profit အရောင်ခွဲခြားခြင်း
+            var profitColor = (item.profit >= 0) ? 'green' : 'red';
+
+            tableHTML += `
+                <tr style="background:white; border-bottom:1px solid #eee;">
+                    <td style="padding:10px; border:1px solid #eee;">${dateText}</td>
+                    <td style="padding:10px; border:1px solid #eee;">${totalText}</td>
+                    <td style="padding:10px; border:1px solid #eee; color:${profitColor}; font-weight:bold;">
+                        ${profitText}
+                    </td>
+                    <td style="padding:10px; border:1px solid #eee;">
+                        <button onclick="deleteSingleRow(${i})" style="background:#e74c3c; color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer;">
+                            🗑️
+                        </button>
+                    </td>
+                </tr>
+            `;
+        }
+    }
+
+    tableHTML += `</tbody></table>`;
+    
+    // HTML ထဲသို့ ထည့်ခြင်း
+    var container = document.getElementById('archiveList'); 
+    if(container) container.innerHTML = tableHTML;
+}
+// ဖျက်တဲ့ Function လေးပါ ထပ်ထည့်ပေးထားပါတယ်
+  function deleteArchiveItem(originalIndex) {
+    if(confirm("ဖျက်မှာ သေချာလား?")) {
+        let archives = JSON.parse(localStorage.getItem('myLedgerDB')) || [];
+        // reverse လုပ်ပြီး ပြထားတာမို့ ပြန်ဖျက်ရင် တွက်ရခက်လို့ index အမှန်ကို ရှာဖျက်မယ်
+        let realIndex = archives.length - 1 - originalIndex;
+        
+        archives.splice(realIndex, 1);
+        localStorage.setItem('myLedgerDB', JSON.stringify(archives));
+        
+        openArchiveModal(); // ချက်ချင်း update ဖြစ်အောင် ပြန်ခေါ်မယ်
+    }
+}
     // (၄) ဖျက်မည် (Delete)
   function deleteArchive(id) {
         if(!confirm("ဒီမှတ်တမ်းကို ဖျက်မှာ သေချာလား?")) return;
@@ -1713,32 +1657,26 @@ if (!settings.customLimits) settings.customLimits = {};
     // ====================================
 // ⚠️ Over Button (အတင်စာရင်း ကူးယူရန် Function - Updated Sort)
 // ========================================
-  function copyOverLimitText() {
-    // ၁။ Data ရယူခြင်း
+// --- (၁) အတင်စာရင်း Data တွက်ချက်ပေးမည့် Function (Common Helper) ---
+function getExportDataList() {
     let all = getOriginalTotals();
-
-    // ၂။ Setting တန်ဖိုးများ
     const preToggle = document.getElementById('preLimitToggle');
     const preInput = document.getElementById('preLimitAmt');
     const modeSelect = document.getElementById('limitModeSelect');
-    // Sort Mode ကို ဇယားကွက် Dropdown ကနေ လှမ်းကြည့်မယ်
     const sortEl = document.getElementById('sortMode');
-    const currentSort = sortEl ? sortEl.value : 'normal'; // normal, max, min
+    const currentSort = sortEl ? sortEl.value : 'normal'; 
     let preLimit = (preToggle && preToggle.checked && preInput) ? (parseInt(preInput.value) || 0) : 0;
     let cutMode = modeSelect ? modeSelect.value : 'normal';
+    
     let exportData = []; 
-    // ဒေတာစုဖို့ Array ဆောက်မယ်
-    let grandTotal = 0;
     for(let i = 0; i < 100; i++) {
         let numStr = i.toString().padStart(2, '0');
         let remaining = all[i];
-        // Pre-Limit ဖြတ်ခြင်း
         if (preLimit > 0) {
             let takePre = Math.min(remaining, preLimit);
             remaining = remaining - takePre;
         }
         if (remaining > 0) {
-            // Main/Custom Limit ဖြတ်ခြင်း
             let realLimit = getRealLimit(numStr);
             let houseHold = 0;
             if (realLimit > 0) {
@@ -1749,84 +1687,140 @@ if (!settings.customLimits) settings.customLimits = {};
                 } else {
                     houseHold = Math.min(remaining, realLimit);
                 }
-            } else {
-                houseHold = 0; // Limit 0 (Closed) ဆိုရင် ဒိုင်မယူ၊ အကုန်အတင်
-            }
-
+            } else { houseHold = 0; }
             let exportAmt = remaining - houseHold;
-
-            // အတင်ရှိမှ စာရင်းထဲထည့်မယ်
             if (exportAmt > 0) {
                 exportData.push({ num: numStr, amt: exportAmt });
-                grandTotal += exportAmt;
             }
         }
     }
-
-    // ၃။ Sort စီခြင်း (ဇယားကွက်အတိုင်း)
     if (currentSort === 'max') {
-        // အများမှ အနည်းသို့ (Descending)
         exportData.sort((a, b) => b.amt - a.amt);
     } else if (currentSort === 'min') {
-        // အနည်းမှ အများသို့ (Ascending)
         exportData.sort((a, b) => a.amt - b.amt);
     }
-    // 'normal' ဆိုရင်တော့ 00-99 အတိုင်းပဲ ရှိပြီးသားမို့ ဘာမှလုပ်စရာမလိုပါ
+    
+    return { exportData, currentSort };
+}
 
-    // ၄။ Clipboard သို့ ကူးခြင်း
+// --- (၂) ပုံမှန် အတင်စာရင်း (၁ ပိုင်းတည်း) Copy ကူးရန် Function ---
+// ဒီ Function ကို မူလ Copy ခလုတ်မှာ သုံးပါ
+function copyOverLimitText() {
+    let { exportData, currentSort } = getExportDataList();
+    
     if(exportData.length > 0) {
-        // Array ကို စာသားပြောင်းခြင်း
-        let lines = exportData.map(item => `${item.num}-${item.amt}`);
-        let finalText = lines.join('\n') + `\n----------\nTotal: ${grandTotal.toLocaleString()}`;
+        let lines = [];
+        let total = 0;
+        exportData.forEach(item => {
+            lines.push(`${item.num}-${item.amt}`);
+            total += item.amt;
+        });
+
+        let finalText = "--- အတင်စာရင်း ---\n" + lines.join('\n') + 
+                        `\n----------\nTotal: ${total.toLocaleString()}`;
         
         copyToClipboard(finalText);
-        
         let sortMsg = (currentSort === 'max') ? " (Max Sort)" : (currentSort === 'min' ? " (Min Sort)" : "");
-        alert("✅ အတင်စာရင်း" + sortMsg + " ကူးယူပြီးပါပြီ!");
+        alert("✅ အတင်စာရင်းကို" + sortMsg + " Copy ကူးပြီးပါပြီ!");
     } else {
         alert("⚠️ အတင်မရှိပါ (No Export)");
     }
 }
+
+// --- (၃) နှစ်ပိုင်းခွဲ၍ အတင်စာရင်း Copy ကူးရန် Function ---
+// ဒီ Function ကို နှစ်ပိုင်းခွဲမည့် ခလုတ်အသစ်မှာ သုံးပါ
+function copySplitOverLimitText() {
+    let { exportData, currentSort } = getExportDataList();
+    
+    if(exportData.length > 0) {
+        let part1Lines = [];
+        let part2Lines = [];
+        let total1 = 0;
+        let total2 = 0;
+        
+        let unevenSplitCounter = 0;
+        exportData.forEach(item => {
+            let fullAmt = item.amt;
+            let splitAmt = Math.floor(fullAmt / 2);
+            let rem = fullAmt % 2; 
+            let amt1, amt2;
+            
+            if (rem === 0) { 
+                if (splitAmt % 50 !== 0) { 
+                    let floorVal = Math.floor(splitAmt / 50) * 50; 
+                    let ceilVal = Math.ceil(splitAmt / 50) * 50;   
+                    if (unevenSplitCounter % 2 === 0) {
+                        amt1 = ceilVal;
+                        amt2 = floorVal;
+                    } else {
+                        amt1 = floorVal;
+                        amt2 = ceilVal;
+                    }
+                    unevenSplitCounter++; 
+                } else {
+                    amt1 = splitAmt;
+                    amt2 = splitAmt;
+                }
+            } else { 
+                if (unevenSplitCounter % 2 === 0) {
+                    amt1 = splitAmt + rem;
+                    amt2 = splitAmt;
+                } else {
+                    amt1 = splitAmt;
+                    amt2 = splitAmt + rem;
+                }
+                unevenSplitCounter++; 
+            }
+            
+            part1Lines.push(`${item.num}-${amt1}`);
+            part2Lines.push(`${item.num}-${amt2}`);
+            total1 += amt1;
+            total2 += amt2;
+        });
+        
+        let finalText = "--- အပိုင်း (၁) ---\n" + part1Lines.join('\n') + 
+                        `\n----------\nTotal: ${total1.toLocaleString()}\n\n` +
+                        "--- အပိုင်း (၂) ---\n" + part2Lines.join('\n') + 
+                        `\n----------\nTotal: ${total2.toLocaleString()}`;
+        
+        copyToClipboard(finalText);
+        let sortMsg = (currentSort === 'max') ? " (Max Sort)" : (currentSort === 'min' ? " (Min Sort)" : "");
+        alert("✅ အတင်စာရင်းကို (၂) ပိုင်း အညီအမျှခွဲ၍" + sortMsg + " Copy ကူးပြီးပါပြီ!");
+    } else {
+        alert("⚠️ အတင်မရှိပါ (No Export)");
+    }
+}
+
   function processInput() {
     const field = $('rawInput'); 
     if (!field.value.trim() || activeIndex === -1) return;
 
-    // 🔥 ပြင်ဆင်ထားသော နေရာ (Syntax Error ဖြေရှင်းပြီး)
-    // အရင်ကမှားနေတဲ့ စာလုံးအပိုတွေကို ဖယ်လိုက်ပါပြီ
     let rawLines = field.value.split(/\r?\n/); 
     
     let added = false;
     const WARNING_LIMIT = 30000; 
-     // 🔥 ဒီနေ့ ရက်စွဲကို ကြိုယူထားမယ် (YYYY-MM-DD ပုံစံ)
     let todayDate = new Date().toISOString().split('T')[0];
 
     for (let rawLine of rawLines) {
         if (!rawLine.trim()) continue;
         let line = uniToEng(rawLine.toLowerCase());
+        
         // =============================================
         // 🧹 Garbage Cleaning (မဆိုင်သောစာများ သန့်ရှင်းရေး)
         // =============================================
-        // ၁။ နှုတ်ဆက်စကားနှင့် လူနာမည်များ
         line = line.replace(/အစ်ကို|ညီလေး|ဆရာ|ကို|ဦး|ဒေါ်|ဗျာ|ခင်ဗျာ|ရှင့်|နော်|ok|help|plz|hi|hello|mingalarpar/g, ' ');
-        // ၂။ အချိန်ကာလများ
         line = line.replace(/မနက်|ညနေ|နေ့လည်|နံ|နံက်|ည|morning|evening|am|pm/g, ' ');
-        // ၃။ စကားအပိုများနှင့် ယူနစ်များ
         line = line.replace(/ကျေးဇူး|တင်ပါတယ်|ရလား|ရမလား|လုပ်ပေးပါ|ထိုးမယ်|ပို|ဆို|ထဲက|သီးသန့်|အပြီး|စီး/g, ' ');
-        // ၄။ "ဒဲ့" ဆိုသော စကားလုံး (ဒဲ့ကပ် dk မဟုတ်လျှင် ဖျက်မည်)
         line = line.replace(/ဒဲ့(?!ကပ်|k)/g, ' '); 
         line = line.replace(/တည့်/g, ' ');
+        
         // =============================================
         // Keyword များကို Standard ပြောင်းခြင်း
         // =============================================
-        // Symbol များကို Space ပြောင်းခြင်း
         line = line.replace(/[=\/\*\-\.\+]/g, ' '); 
-        
-        // ရှုပ်ထွေးသော Keyword များ ရှင်းထုတ်ခြင်း
         line = line.replace(/ခွေ\s*(.*?)\s*အပူး(?:ပါ)?/g, 'kp $1')
             .replace(/kအပူးပါ|အပူးပါခွေ|ခွေအပူးပါ|ခွေp|ခွေa|ခွေပူး|ခပ|ka/g, 'kp');
-        
         line = line.replace(/ပတ်ရှင်း|ဒေးလီး|အပတ်ရှင်း|အပါတ်ရှင်း/g, ' ');
-        
         line = line.replace(/အပါ|ပတ်သီး|ပါတ်|ပတ်|ပါ/g, 'p') 
              .replace(/ခွေ|ခ/g, 'k').replace(/စုံစုံ/g, 'ss')
              .replace(/အာ|@|©|®/g, 'r').replace(/မမ/g, 'mm').replace(/စုံမ|စမ/g, 'sm')
@@ -1838,14 +1832,8 @@ if (!settings.customLimits) settings.customLimits = {};
              .replace(/အပူး၁၀ကွက်|အပူး10ကွက်|အပူး|အပ|ပူး/g, 'ap')
              .replace(/ဒဲ့ကပ်|ကပ်/g, 'dk').replace(/မနောက်|မန/g, 'mt').replace(/ထိပ်စီး|ထိပ်|ထ/g, 'h');
 
-        // 🔥 အရေးကြီး ပြင်ဆင်ချက် 🔥
-        // nk, kn, ng, nn တို့မှာပါတဲ့ 'n' ကို 't' (နောက်ပိတ်) အဖြစ် မှားမပြောင်းသွားအောင် 
-        // ယာယီ စာလုံးအကြီး (Uppercase) ပြောင်းပြီး ကာကွယ်ထားပါမည်။
         line = line.replace(/nk/g, 'NK').replace(/kn/g, 'KN').replace(/ng/g, 'NG').replace(/nn/g, 'NN');
-        
-        // ပြီးမှ 'n' (နောက်ပိတ်) ကို 't' သို့ ပြောင်းမည်
         line = line.replace(/နောက်ပိတ်|ပိတ်|နောက်|န|n/g, 't');
-        
         line = line.replace(/ဘရိတ်|ဘရ|ဘ|break|bk/g, 'b')
              .replace(/[။၊]/g, ' '); 
 
@@ -1853,24 +1841,35 @@ if (!settings.customLimits) settings.customLimits = {};
         if (!trim) continue;
         trim = trim.replace(/,/g, ' ');
 
+        // 🔥🔥🔥 အသစ်ထည့်သွင်းထားသော (Duplicate Check) အပိုင်း 🔥🔥🔥
+        // History ထဲမှာ ဒီနေ့ရက်စွဲနဲ့ ဒီစာကြောင်း အတိအကျ ဝင်ပြီးသားလား စစ်ဆေးပါမည်
+        if (customers[activeIndex] && customers[activeIndex].history) {
+            let isAlreadyEntered = customers[activeIndex].history.some(h => h.text === trim && h.date === todayDate);
+            
+            if (isAlreadyEntered) {
+                // ဝင်ပြီးသားဖြစ်နေရင် Alert ပြပါမည်
+                let wantToAddAgain = confirm(`⚠️ သတိပေးချက် (စာရင်းထပ်နေပါသည်)\n\n"${rawLine}" ကို ဒီနေ့စာရင်းထဲမှာ ထည့်သွင်းပြီးဖြစ်နေပါသည်။\n\nတကယ်ပဲ နောက်တစ်ခေါက် ထပ်ထည့်မှာ သေချာပါသလား?`);
+                
+                if (!wantToAddAgain) {
+                    continue; // Cancel နှိပ်ရင် ဒီစာကြောင်းကို မတွက်တော့ဘဲ ကျော်သွားပါမည်
+                }
+            }
+        }
+        // 🔥🔥🔥 Duplicate Check ပြီးပါပြီ 🔥🔥🔥
+
         let id = Date.now() + Math.random(); 
         let matches = [];
-        // (၁) ထိပ် + R တွဲလျက်ပုံစံ
-        // =============================================
-        // 🔥 ပြင်ဆင်ချက်- ထိပ်(h)၊ နောက်(t/n)၊ R(r) တွဲလျက်ပုံစံများ
-        // =============================================
-        // (၁) ထိပ် + နောက် တွဲလျက်ပုံစံ (ဥပမာ- 123 h 3000 t 2000)
+        
+        // (၁) ထိပ် + နောက် / ထိပ် + R တွဲလျက်ပုံစံ
         let htMatch = trim.match(/^(\d+)\s*h\s*(\d+)\s*(?:t|n)\s*(\d+)$/i);
-        // (၂) ထိပ် + R တွဲလျက်ပုံစံ (ဥပမာ- 123 h 3000 r 2000)
         let hrMatch = trim.match(/^(\d+)\s*h\s*(\d+)\s*r\s*(\d+)$/i);
 
         if (htMatch || hrMatch) {
             let match = htMatch || hrMatch;
             let digitStr = match[1];       
             let hAmt = parseInt(match[2]);  
-            let secondAmt = parseInt(match[3]); // ဒါက t သို့မဟုတ် r ရဲ့ ပမာဏဖြစ်မယ်
+            let secondAmt = parseInt(match[3]); 
             let digits = digitStr.split(''); 
-            let isR = !!hrMatch; // r ဖြစ်နေသလား စစ်တာ
             
             digits.forEach(d => {
                 for (let i = 0; i < 100; i++) {
@@ -1878,19 +1877,12 @@ if (!settings.customLimits) settings.customLimits = {};
                     let isHead = numStr.startsWith(d); 
                     let isRear = numStr.endsWith(d);    
                     
-                    if (isHead) {
-                        matches.push({ num: numStr, amt: hAmt });
-                    }
-                    if (isRear) {
-                        // r ပုံစံဆိုရင် ထိပ်ရောနောက်ရော ပါရမယ်၊ t ပုံစံဆိုရင် နောက်ပဲပါရမယ်
-                        matches.push({ num: numStr, amt: secondAmt });
-                    }
+                    if (isHead) matches.push({ num: numStr, amt: hAmt });
+                    if (isRear) matches.push({ num: numStr, amt: secondAmt });
                 }
             });
         } 
         else { 
-            // ... ကျန်တဲ့ dkMatch Logic များ ဆက်သွားမည် ... 
-            // (က) ဒဲ့ကပ် Logic
             let dkMatch = trim.match(/^(\d+)\s*dk\s*(\d+)\s*[\s,]+(\d+)(?:\s*(?:r|အာ)\s*(\d+))?/i);
             if (dkMatch) {
                 let fStr = dkMatch[1]; let bStr = dkMatch[2]; let mAmt = parseInt(dkMatch[3]); let rAmt = dkMatch[4] ? parseInt(dkMatch[4]) : 0; 
@@ -1900,7 +1892,6 @@ if (!settings.customLimits) settings.customLimits = {};
                 }
             }
             else {
-                // (ခ) Shortcut & Standard Logic
                 let hasShortcut = /[a-z\u1000-\u109f]+/i.test(trim); 
                 let isR = /r|အာ/i.test(trim) && !/bro/i.test(trim);
 
@@ -1928,7 +1919,8 @@ if (!settings.customLimits) settings.customLimits = {};
                             let fN = n.padStart(2, '0'); if (fN.length !== 2) return; 
                             let revN = fN[1] + fN[0];
                             if (fN === revN) { 
-                                let finalAmt = settings.doublePair ? (sA + rA) : sA; 
+                                // 'settings' is assumed to be globally available
+                                let finalAmt = (typeof settings !== 'undefined' && settings.doublePair) ? (sA + rA) : sA; 
                                 matches.push({ num: fN, amt: finalAmt }); 
                             } else { 
                                 if (sA > 0) matches.push({ num: fN, amt: sA }); 
@@ -1936,7 +1928,6 @@ if (!settings.customLimits) settings.customLimits = {};
                             } 
                         });
                     } else {
-                        // (ဃ) ပုံမှန် ဂဏန်းများ
                         let parts = trim.split(/\s+/).filter(x => /^\d+$/.test(x)); 
                         if (parts.length > 1) { 
                             let amt = parseInt(parts.pop()); 
@@ -1964,40 +1955,37 @@ if (!settings.customLimits) settings.customLimits = {};
                 allowAdd = confirm(`⚠️ သတိပေးချက်!\n\nသွင်းငွေပမာဏ (${bigAmountItem.amt}) သည် သတ်မှတ်ချက် (${WARNING_LIMIT}) ထက် များနေပါသည်။\n\nဆက်သွင်းမှာ သေချာပါသလား?`);
             }
             if (allowAdd) {
-                // ဒီနေ့ရက်စွဲယူမယ်
- // 🔥🔥🔥 အဓိက ပြင်ရမည့်နေရာ 🔥🔥🔥
                 matches.forEach(m => {
                     customers[activeIndex].data.push({ 
                         id: id, 
                         num: m.num, 
                         amt: m.amt, 
-                        date: todayDate // <--- ⚠️ ဒီကြောင်းလေး ပါမှ Report တက်မှာပါ
+                        date: todayDate 
                     });
                 }); 
                 
                 customers[activeIndex].history.push({ 
                     id: id, 
                     text: trim,
-                    date: todayDate // History မှာလည်း date ထည့်ထားရင် ပိုကောင်းပါတယ်
+                    date: todayDate
                 }); 
                 added = true;
             }
         }
-    } // Loop အပိတ်
+    } 
 
-    // 🔥 ပြင်ဆင်ထားသော အပိုင်း 🔥
     if (added) { 
-        saveToStorage(); // Data သိမ်းမယ်
-        // renderAll (တွက်ချက်မှု) မှာ Error တက်ခဲ့ရင်တောင် 
-        // အောက်က စာရှင်းတဲ့အလုပ် ဆက်လုပ်အောင် try-catch ခံလိုက်ပါပြီ
+        // 'saveToStorage' and 'renderAll' are assumed to be globally available functions
+        if (typeof saveToStorage === 'function') saveToStorage(); 
         try {
-            renderAll(); 
+            if (typeof renderAll === 'function') renderAll(); 
         } catch (e) {
-            console.error("Render Error:", e); // Error ကို Console မှာပြမယ် (App မရပ်သွားအောင်)
+            console.error("Render Error:", e); 
         }
-        field.value = ""; // စာကွက်ရှင်းမယ်
+        field.value = ""; 
     }
 }
+
   function processStandardCommands(line, matches) {
     // English Shortcut များ
     const SHORTCUT_LISTS = { 
@@ -2115,39 +2103,31 @@ if (!settings.customLimits) settings.customLimits = {};
   function deleteSelectedRows() { 
       if (activeIndex === -1 || !customers[activeIndex]) return; const checkboxes = document.querySelectorAll('.row-checkbox:checked'); if (checkboxes.length === 0) return alert("ဖျက်လိုသော စာရင်းများကို အရင်ရွေးပါ"); if (confirm(`ရွေးချယ်ထားသော စာရင်း (${checkboxes.length}) ခုကို ဖျက်မှာ သေချာပါသလား?`)) { const indicesToDelete = Array.from(checkboxes).map(cb => parseInt(cb.getAttribute('data-index'))).sort((a, b) => b - a); indicesToDelete.forEach(idx => { let historyItem = customers[activeIndex].history[idx]; if (historyItem) { customers[activeIndex].data = customers[activeIndex].data.filter(d => d.id !== historyItem.id); customers[activeIndex].history.splice(idx, 1); } }); saveToStorage(); renderAll(); } }
   function exportBackup() { 
-    // ၁။ လက်ရှိအချိန်ကို ယူမည်
     const now = new Date();
-    // ၂။ ဖိုင်နာမည်အတွက် ရက်စွဲနှင့် အချိန်ကို ဖန်တီးမည်
-    // (Android လက်ခံမည့် ပုံစံ: 2026-01-18_14-30-05)
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, '0');
-    const day = String(now.getDate()).padStart(2, '0');
-    const hour = String(now.getHours()).padStart(2, '0');
-    const minute = String(now.getMinutes()).padStart(2, '0');
-    const second = String(now.getSeconds()).padStart(2, '0');
-    const fileNameDate = `${year}-${month}-${day}_${hour}-${minute}-${second}`;
-    // ၃။ Data နှင့် Archives များကို စုစည်းမည်
-    const savedArchives = JSON.parse(localStorage.getItem('2d_archives')) || [];
+    
+    // (၁) ဖိုင်နာမည်အတွက် ရက်စွဲပုံစံ (ဥပမာ: 2D_Backup_2026-01-13_14-30.json)
+    // ဖိုင်နာမည်တွင် : (colon) သုံးမရသဖြင့် - (dash) သုံးထားပါသည်
+    const fileNameDate = now.getFullYear() + "-" + 
+                         (now.getMonth() + 1).toString().padStart(2, '0') + "-" + 
+                         now.getDate().toString().padStart(2, '0') + "_" + 
+                         now.getHours().toString().padStart(2, '0') + "-" + 
+                         now.getMinutes().toString().padStart(2, '0');
+
+    // (၂) JSON အထဲမှာလည်း သိမ်းချင်ရင် ဒီမှာထည့်ပါ (backupDate အနေဖြင့် ပါသွားပါမည်)
     const dataToSave = {
         customers: customers,
         settings: settings,
-        archives: savedArchives, // မှတ်တမ်းဟောင်းများပါ ထည့်မည်
-        backupDate: now.toLocaleString('en-GB') 
+        backupDate: now.toLocaleString('en-GB') // ရက်စွဲနဲ့အချိန်ကို ဖိုင်ထဲမှာထည့်သိမ်းမည်
     };
-    // ၄။ ဖိုင်ထုတ်မည်
-    // application/octet-stream သည် Android ကို Download လုပ်ရန် တွန်းအားပေးသည်
-    let b = new Blob([JSON.stringify(dataToSave)], {type: 'application/octet-stream'});
-    let url = URL.createObjectURL(b);
+
+    let b = new Blob([JSON.stringify(dataToSave)], {type: 'application/json'});
     let l = document.createElement('a');
-    l.href = url;
-    // ဖိုင်နာမည် သတ်မှတ်ခြင်း (ဥပမာ: 2D_Backup_2026-01-18_14-30-05.json)
+    l.href = URL.createObjectURL(b);
+    
+    // ဖိုင်နာမည် ပြောင်းမည့်နေရာ
     l.download = `2D_Backup_${fileNameDate}.json`; 
-    // 🔥 Body ထဲထည့်ပြီးမှ Click ခိုင်းခြင်း (Android အတွက် အရေးကြီးသည်)
-    document.body.appendChild(l);
+    
     l.click(); 
-    document.body.removeChild(l);
-    // Memory ပြန်ရှင်းခြင်း
-    setTimeout(() => URL.revokeObjectURL(url), 100);
 }
   function saveImage(input) {
     // Customer ရွေးထားခြင်း ရှိမရှိ စစ်ပါ
@@ -3566,89 +3546,99 @@ function viewMonthlyReport() {
 // =======================================
 // 🚀 1. MASTER SAVE SYSTEM (Updated for Date Accuracy)
 // =========================================
-//function saveMasterSystem() {
-   // if (!customers || customers.length === 0) {
-     //   alert("သိမ်းဆည်းစရာ Customer စာရင်းမရှိပါ။");
-   //     return;
- //   }
-    // 🔥 မြန်မာစံတော်ချိန်အတိုင်း ရက်စွဲယူခြင်း (YYYY-MM-DD) Fix
- //   var now = new Date();
- //var offset = now.getTimezoneOffset() * 60000;
-   // var localISOTime = (new Date(now - offset)).toISOString().slice(0, 10);
- //   var dateString = localISOTime; 
+function saveMasterSystem() {
+    // ၁။ စာရင်းရှိမရှိ စစ်ဆေးခြင်း
+    if (!customers || customers.length === 0) {
+        alert("သိမ်းဆည်းစရာ Customer စာရင်းမရှိပါ။");
+        return;
+    }
 
-  //  var winNum = settings.winNum || "-"; 
- //   var odds = settings.odds || 80;
-  //  var defaultCom = settings.com || 0;
-    
-   // var exportBatch = [];
+    // ၂။ ရက်စွဲနှင့် ဆက်တင်များ
+    var now = new Date();
+    var offset = now.getTimezoneOffset() * 60000;
+    var localISOTime = (new Date(now - offset)).toISOString().slice(0, 10); // YYYY-MM-DD
+    var dateString = localISOTime;
 
-  //  customers.forEach((c) => {
-  //      var total = c.data.reduce((a, b) => a + b.amt, 0);
+    // ၃။ Grand Total တွက်ချက်ခြင်း (History ပြရန်အတွက်)
+    var grandTotal = 0;
+    customers.forEach(c => {
+        var cTotal = c.data.reduce((a, b) => a + Number(b.amt || 0), 0);
+        grandTotal += cTotal;
+    });
 
-    //    if (total > 0) {
-        //    var comRate = (c.com !== null && c.com !== undefined) ? parseFloat(c.com) : parseFloat(defaultCom);
-      //      var comAmt = total * (comRate / 100);
-       //     var net = total - comAmt;
+    if (grandTotal === 0) {
+        alert("⚠️ ရောင်းရငွေ (Total) 0 ဖြစ်နေပါသည်။ စာရင်းသွင်းပြီးမှ သိမ်းပါ။");
+        return;
+    }
 
-        //    var userWinAmt = c.data.filter(d => d.num == winNum).reduce((a, b) => a + b.amt, 0);
-       //     var payout = userWinAmt * odds;
-      //      var profit = net - payout;
+    if(confirm("စုစုပေါင်း ရောင်းရငွေ: " + grandTotal.toLocaleString() + " ကျပ်\nBackup ယူပြီး သိမ်းဆည်းမည်။ သေချာပါသလား?")) {
+        
+        // ============================================
+        // အပိုင်း (က) - ဖုန်း Screen ပေါ်က History အတွက်
+        // (စာရင်းချုပ်ကိုသာ သိမ်းမည်)
+        // ============================================
+        var historyItem = {
+            date: dateString,
+            total: grandTotal, 
+            customerCount: customers.length,
+            timestamp: new Date().getTime(),
+            // History ပြတဲ့နေရာက လိုအပ်မယ့် အခြား key များ (လိုအပ်လျှင်)
+            net: 0, // လိုအပ်ရင် တွက်ထည့်ပါ
+            profit: 0 // လိုအပ်ရင် တွက်ထည့်ပါ
+        };
 
-        //    var dataPacket = {
-       //         date: dateString, // 2026-01-22 ပုံစံဖြင့် ဝင်သွားမည်
-         //       customerName: c.name,
-         //       total: total,
-           //     commission: comAmt,
-            //    net: net,
-             //   winNum: winNum,
-           //     pAmount: userWinAmt,
-           //     pTotal: payout,
-           //     profit: profit,
-           //     timestamp: new Date().getTime()
-         //   };
-         //   exportBatch.push(dataPacket);
-    //    }
- //   });
+        var oldDB = JSON.parse(localStorage.getItem('myLedgerDB')) || [];
+        oldDB.push(historyItem);
+        localStorage.setItem('myLedgerDB', JSON.stringify(oldDB));
 
-  //  if (exportBatch.length === 0) {
-     //   alert("⚠️ ပို့စရာ စာရင်း (Total > 0) ရှိသော Customer မတွေ့ပါ။");
-    //    return;
- //   }
 
-   // if(confirm("Customer (" + exportBatch.length + ") ယောက်စာရင်းကို သိမ်းမည်။ သေချာပါသလား?")) {
-        // ၁။ ဖုန်းထဲသိမ်းမည် (History အတွက်)
-     //   var oldDB = JSON.parse(localStorage.getItem('myLedgerDB')) || [];
-    //    exportBatch.forEach(item => oldDB.push(item));
-   //     localStorage.setItem('myLedgerDB', JSON.stringify(oldDB));
+        // ============================================
+        // အပိုင်း (ခ) - Backup File Download (Raw Data)
+        // (Restore ပြန်လုပ်ရန် Customer အကုန်ပါမည်)
+        // ============================================
+        var fullSystemData = {
+            customers: customers,       
+            settings: settings || {},   
+            savedDate: new Date().toISOString(),
+            totalSales: grandTotal
+        };
 
-        // ၂။ ဖုန်းထဲသို့ ဖိုင်ဒေါင်းလုဒ်လုပ်မည် (Backup File)
-   //     var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportBatch));
-   //     var downloadAnchorNode = document.createElement('a');
-    //    downloadAnchorNode.setAttribute("href", dataStr);
-    //    downloadAnchorNode.setAttribute("download", "2DMaster_" + dateString + ".json");
-    //    document.body.appendChild(downloadAnchorNode);
-    //    downloadAnchorNode.click();
-     //   downloadAnchorNode.remove();
+        var fileName = "2D_FullBackup_" + dateString + ".json";
+        var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(fullSystemData));
+        var downloadAnchorNode = document.createElement('a');
+        downloadAnchorNode.setAttribute("href", dataStr);
+        downloadAnchorNode.setAttribute("download", fileName);
+        document.body.appendChild(downloadAnchorNode);
+        downloadAnchorNode.click();
+        downloadAnchorNode.remove();
+        
+        alert("✅ အောင်မြင်ပါသည်။\n- History တွင် မှတ်တမ်းဝင်သွားပါပြီ။\n- Backup ဖိုင်လည်း ရပါပြီ။");
+        
+        // (Optional) သိမ်းပြီးရင် စာရင်းရှင်းမလား?
+        // customers = []; updateUI(); // လိုအပ်ရင် သုံးရန်
+    }
+}
+// ==========================================
+// ဒီကုဒ်ကို Script ဖိုင်ရဲ့ အောက်ဆုံးမှာ ထားပေးပါfunction
+// ==========================================
+function forceDownloadBackup() {
+    // ၁။ ခလုတ်အလုပ်လုပ်မလုပ် စမ်းသပ်ခြင်း
+    // (အဆင်ပြေသွားရင် ဒီ alert စာကြောင်းကို ပြန်ဖျက်နိုင်ပါတယ်)
+    alert("Backup ခလုတ် နှိပ်လိုက်ပါပြီ။ စာရင်းစစ်နေပါသည်..."); 
 
-        // ၃။ Google Sheets သို့ ပို့မည်
-   //     fetch(GOOGLE_SCRIPT_URL, {
-      //      method: 'POST',
-    //        mode: 'no-cors',
-       //     headers: { 'Content-Type': 'application/json' },
-      //      body: JSON.stringify(exportBatch)
-  //      }).then(() => {
-     //       alert("✅ သိမ်းဆည်းပြီးပါပြီ!\n(History တွင် နေ့စဉ်/အပတ်စဉ် စာရင်းပြန်ကြည့်နိုင်ပါသည်)");
-   //     }).catch(err => {
-      //      alert("❌ Sheets Error: " + err + "\n(ဒါပေမဲ့ ဖုန်းထဲမှာတော့ သိမ်းပြီးပါပြီ)");
-    //    });
- //   }
+    // ၂။ saveMasterSystem ရှိမရှိ စစ်ဆေးခြင်း
+    if (typeof saveMasterSystem === "function") {
+        try {
+            saveMasterSystem(); // မူရင်း Function ကို လှမ်းခေါ်မည်
+        } catch (error) {
+            alert("Error ဖြစ်နေပါသည်: " + error.message);
+        }
+    } else {
+        alert("Error: 'saveMasterSystem' ဆိုတဲ့ Function ကို ရှာမတွေ့ပါ။ ကုဒ်နာမည် မှားနေနိုင်ပါသည်။");
+    }
+}
 //// =========================================
 // 🔥 MOBILE BACKUP FIX (Confirm မခံဘဲ တန်းဒေါင်းမည့် Function)
-// =========================================// ============================================
-// ✅ NEW UPDATED LOGIC (Error Free Version)
-// ============================================
-
 // ၁။ နေ့စဉ်စာရင်းကို တွက်ချက်ပြီး သိမ်းဆည်းခြင်း (Calculation Mode)
 function archiveDailyData() {
     var today = new Date().toLocaleDateString('en-GB'); // DD/MM/YYYY
@@ -3711,7 +3701,6 @@ function archiveDailyData() {
     history.push(dailyRecord);
     localStorage.setItem('my_weekly_record', JSON.stringify(history));
 }
-
 // ၂။ Reset လုပ်သည့် Function (Win Num ပါဖျက်မည်)
 window.runSafeDelete = function() {
     // (က) ဖျက်ခါနီး မှတ်တမ်းအရင်သိမ်းမယ်
@@ -3748,7 +3737,6 @@ window.runSafeDelete = function() {
     alert("✅ ယနေ့စာရင်းကို History တွင်သိမ်းပြီး၊ အသစ်ပြန်ဖွင့်လိုက်ပါပြီ။");
     window.location.reload();
 }
-
 // ၃။ History ဇယားဖွင့်ခြင်း
 function openHistoryModal() {
     var modal = document.getElementById('historyModal');
@@ -3792,7 +3780,6 @@ function openHistoryModal() {
     
     modal.style.display = 'flex';
 }
-
 // ၄။ အပတ်စဉ် စာရင်းချုပ် (Weekly Report)
 function displayWeeklyReport() {
     var records = JSON.parse(localStorage.getItem('my_weekly_record') || "[]");
@@ -3819,7 +3806,6 @@ function displayWeeklyReport() {
 
     alert("📅 ယခုအပတ် စာရင်းချုပ် (Last 7 Days)\n------------------------\n💰 ရောင်းရငွေ: " + weeklyTotal.toLocaleString() + "\n📈 အမြတ်/အရှုံး: " + Math.round(weeklyProfit).toLocaleString());
 }
-
 // ၅။ လစဉ် စာရင်းချုပ် (Monthly Report)
 function displayMonthlyReport() {
     var records = JSON.parse(localStorage.getItem('my_weekly_record') || "[]");
@@ -3845,7 +3831,6 @@ function displayMonthlyReport() {
 
     alert("🗓️ ယခုလ စာရင်းချုပ် (This Month)\n------------------------\n💰 ရောင်းရငွေ: " + monthlyTotal.toLocaleString() + "\n📈 အမြတ်/အရှုံး: " + Math.round(monthlyProfit).toLocaleString());
 }
-
 // ၆။ History ဖျက်ရန်
 function clearHistoryLog() {
     if(confirm("မှတ်တမ်းအားလုံးကို ဖျက်မှာ သေချာပါသလား?")) {
@@ -3853,57 +3838,54 @@ function clearHistoryLog() {
         openHistoryModal(); 
     }
 }
-
-}
-// ၁။ History Box ကို ဖွင့်ခြင်း
-function openHistoryModal() {
-    var modal = document.getElementById('historyModal');
-    var tbody = document.getElementById('historyTableBody');
-    
-    // Storage ထဲက Data ဆွဲထုတ်မယ်
-    var historyData = JSON.parse(localStorage.getItem('my_weekly_record') || "[]");
-    
-    // ဇယားကွက်ထဲ ထည့်မယ်
-    tbody.innerHTML = "";
-    var grandTotal = 0; // တစ်ပတ်စာ စုစုပေါင်း
-
-    if (historyData.length === 0) {
-        tbody.innerHTML = "<tr><td colspan='2'>မှတ်တမ်း မရှိသေးပါ။</td></tr>";
-    } else {
-        // နောက်ဆုံးရက် အပေါ်က ပြအောင် reverse() သုံးလိုက်တယ်
-        historyData.reverse().forEach(record => {
-            grandTotal += parseInt(record.total || 0);
-            var row = `<tr>
-                <td style="padding:8px;">${record.date}</td>
-                <td style="padding:8px;">${parseInt(record.total).toLocaleString()}</td>
-            </tr>`;
-            tbody.innerHTML += row;
-        });
-        
-        // အောက်ဆုံးမှာ စုစုပေါင်း ပြမယ်
-        var totalRow = `<tr style="background:#f1c40f; font-weight:bold;">
-            <td style="padding:8px;">စုစုပေါင်း (Total)</td>
-            <td style="padding:8px;">${grandTotal.toLocaleString()}</td>
-        </tr>`;
-        tbody.innerHTML += totalRow;
-    }
-    
-    modal.style.display = 'flex';
-}
 // ၂။ History Box ကို ပိတ်ခြင်း
 function closeHistoryModal() {
     document.getElementById('historyModal').style.display = 'none';
 }
 // ၃။ History အားလုံးကို ဖျက်ခြင်း (Reset)
-function clearHistoryLog() {
-    if(confirm("မှတ်တမ်းဟောင်းအားလုံးကို ဖျက်မှာ သေချာပါသလား?")) {
-        localStorage.removeItem('my_weekly_record');
-        openHistoryModal(); // ဇယားကို ပြန် Refresh လုပ်မယ်
+  function copySplitAmountExport() {
+    // ၁။ Export ထွက်နေသော စာရင်း Array ကို ယူခြင်း (globalExportData ကို သုံးထားသည်)
+    if (typeof globalExportData === 'undefined' || globalExportData.length === 0) {
+        alert("ကူးယူရန် အလျှံစာရင်း မရှိသေးပါ!");
+        return;
     }
+
+    let part1Lines = [];
+    let part2Lines = [];
+    let total1 = 0;
+    let total2 = 0;
+
+    // ၂။ ဂဏန်းတစ်ခုချင်းစီကို ၂ နဲ့စားပြီး အပိုင်းခွဲခြင်း
+    globalExportData.forEach(item => {
+        let num = item.num;
+        let fullAmt = parseInt(item.amt);
+        
+        // ၂ နဲ့စားသည် (အကြွင်းရှိပါက ပထမပိုင်းထဲသို့ ၁ တိုးထည့်ပေးမည်)
+        let splitAmt = Math.floor(fullAmt / 2);
+        let rem = fullAmt % 2; 
+
+        let amt1 = splitAmt + rem; // အပိုင်း (၁)
+        let amt2 = splitAmt;       // အပိုင်း (၂)
+
+        part1Lines.push(`${num}-${amt1}`);
+        part2Lines.push(`${num}-${amt2}`);
+        
+        total1 += amt1;
+        total2 += amt2;
+    });
+
+    // ၃။ စာသားအဖြစ် ပေါင်းစည်းခြင်း
+    let finalText = "--- အပိုင်း (၁) ---\n" + part1Lines.join("\n") + 
+                    "\n----------\nTotal: " + total1.toLocaleString() +
+                    "\n\n--- အပိုင်း (၂) ---\n" + part2Lines.join("\n") + 
+                    "\n----------\nTotal: " + total2.toLocaleString();
+
+    // ၄။ Clipboard သို့ ကူးယူခြင်း
+    copyToClipboard(finalText);
+    alert("ငွေပမာဏကို တစ်ဝက်စီခွဲ၍ အပိုင်း (၁) နှင့် (၂) အဖြစ် Copy ကူးပြီးပါပြီ။");
 }
 
 </script>
-
   <div id="summaryModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:10000; justify-content:center; align-items:center;">
     
     <div style="background:white; width:95%; max-width:600px; border-radius:12px; overflow:hidden; font-family: 'Pyidaungsu', 'Padauk', sans-serif; box-shadow: 0 10px 25px rgba(0,0,0,0.5); display:flex; flex-direction:column; max-height:95vh;">
